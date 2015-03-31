@@ -1,0 +1,26 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "stephen_ellis99@hotmail.co.uk",
+    "longName": "Macro Rollah",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "file": "images/no_litter.png",
+                "name": "IMAGE_NO_LITTER",
+                "type": "png"
+            }
+        ]
+    },
+    "sdkVersion": "2",
+    "shortName": "Macro Rollah",
+    "uuid": "5fd44f43-31fc-495d-bd4a-18869bbfa5da",
+    "versionCode": 1,
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": false
+    }
+}
