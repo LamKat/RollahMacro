@@ -79,9 +79,39 @@ char *itoa(int16_t num);
 void Prnt(int16_t *arriRolls, int16_t iMin, int16_t iMax);
 
 void strthing(){
-	char *szStr = "20d100";
-	int32_t rtn = calculate(szStr);
-	APP_LOG(APP_LOG_LEVEL_DEBUG,"Input = %s, Output = %d", szStr, (int) rtn);		
+	char *szStr = "6d4 + 2d4";
+	int32_t rtn = 0;
+	char szCurStr[30];
+	int i=-1,j=1;
+	while(szStr[++i] != '\0'){
+		switch(szStr[i] ){
+			case ' ':
+				strncpy(szCurStr, szStr, i);
+				szCurStr[i] = '\0';
+				APP_LOG(APP_LOG_LEVEL_DEBUG,"Output = %s", szCurStr);		
+				rtn += (j*calculate(szCurStr));
+				szStr += ++i;
+				APP_LOG(APP_LOG_LEVEL_DEBUG,"NewText = %s", szStr);
+				i=-1;
+				break;
+			case '+':
+				j = 1;
+				szStr += 2;
+				APP_LOG(APP_LOG_LEVEL_DEBUG,"NewText = %s", szStr);
+				break;
+			case '-':
+				j = -1;
+				szStr += 2;
+				APP_LOG(APP_LOG_LEVEL_DEBUG,"NewText = %s", szStr);
+				break;
+		}
+		
+	}
+	
+	rtn += (j*calculate(szStr));
+	
+	//rtn = calculate(szStr);
+	APP_LOG(APP_LOG_LEVEL_DEBUG,"Output = %d", (int) rtn);		
 }
 
 int16_t calculate(char *szStr){
@@ -109,7 +139,6 @@ int16_t calculate(char *szStr){
 	int32_t iTemp;
 	while(szStr[0] != '\0'){
 		
-		Prnt(arriRolls,iMin,iMax);
 		operator = szStr[0];
 		if (operator == 'H' || operator == 'h'){
 			return arriRolls[iMax];
@@ -128,7 +157,7 @@ int16_t calculate(char *szStr){
 			case 'k':
 			case 'K':
 				//iMin += operand;
-				iMin = iMax - --operand;
+				iMin = iMax - --operand; //This code which looks like a bug isn't
 				break;
 			case '<':
 				iTemp = 0;
@@ -164,7 +193,6 @@ int16_t calculate(char *szStr){
 	APP_LOG(APP_LOG_LEVEL_DEBUG,"Min = %d, Max = %d", iMin, iMax);
 	for(i=iMin;i<=iMax;i++){
 		iTemp += arriRolls[i];
-		//APP_LOG(APP_LOG_LEVEL_DEBUG,"arriRoll[%d] = %d", i, arriRolls[i]);
 	}
 	Prnt(arriRolls,iMin,iMax);
 	return iTemp;
@@ -173,7 +201,7 @@ int16_t calculate(char *szStr){
 
 
 
-void Prnt(int16_t *arriRolls, int16_t iMin, int16_t iMax){
+void Prnt(int16_t *arriRolls, int16_t iMin, int16_t iMax){ //You want to fuck with this function
 	int i = iMin;
 	char szFinal[30];
 	strcpy(szFinal,"[");
@@ -194,34 +222,34 @@ void Prnt(int16_t *arriRolls, int16_t iMin, int16_t iMax){
 }
 
 
-char *itoa(int16_t num)
-{
+
+
+
+
+
+
+
+
+//Dijkstra probably hates me. 
+
+
+char *itoa(int16_t num){
 	static char buff[20] = {};
 	int i = 0, temp_num = num, length = 0;
 	char *string = buff;
 	if(num >= 0) {
-		// count how many characters in the number
 		while(temp_num) {
 		temp_num /= 10;
 		length++;
 		}
-		// assign the number to the buffer starting at the end of the 
-		// number and going to the begining since we are doing the
-		// integer to character conversion on the last number in the
-		// sequence
 		for(i = 0; i < length; i++) {
 			buff[(length-1)-i] = '0' + (num % 10);
 			num /= 10;
 		}
-			buff[i] = '\0'; // can't forget the null byte to properly end our string
+			buff[i] = '\0';
 	}
 	return string;
 }
-
-
-
-
-
 
 int16_t fuiNextInt(char *szStr, int16_t *iLen){
 	int16_t i,j;	
@@ -245,7 +273,7 @@ void quickSort( int16_t a[], int16_t l, int16_t r){
    }
 }
 
-int16_t partition( int16_t a[], int16_t l, int16_t r) {
+int16_t partition( int16_t a[], int16_t l, int16_t r) {//You are not expected to understand this
    int16_t pivot, i, j, t;
    pivot = a[l];
    i = l; j = r+1;
